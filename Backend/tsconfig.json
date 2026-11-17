@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "outDir": "./dist",
+    "rootDir": "./src", // Organizá tu código en una carpeta /src
+    
+    /* Interoperabilidad */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    /* Tipado Estricto */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+
+    /* Extras útiles */
+    "sourceMap": true,
+    "declaration": true
+  },
+  "include": ["src/**/*", "enum/Role.enum.ts"],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}

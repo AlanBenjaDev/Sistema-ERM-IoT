@@ -1,0 +1,7 @@
+export enum EmployeeRole {
+  DEVELOPER = 'DEVELOPER',
+  DESIGNER = 'DESIGNER',
+  PROJECT_MANAGER = 'PROJECT_MANAGER',
+  ADMIN = 'ADMIN',
+  ANALYST = 'ANALYST'
+}

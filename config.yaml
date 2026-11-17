@@ -1,0 +1,59 @@
+##version de la api
+apiVersion: apps/v1
+##TIpo de recurso que se crea (deployment o service)
+kind: Deployment
+##nombre del servicio
+metadata:
+  name: enterprise-backend-deployment
+  ##nombre del namespace donde se desplegara el servicio
+  labels:
+
+    app: system-enterprise-control
+spec:
+##Replicas del servicio (Mientrras mas replicas mas aguante a fallos ya que va a tener varios contenedores abiertos al mismo tiempo, en este caso 2)
+  replicas: 2
+  selector:
+    matchLabels:
+      app: system-enterprise-control
+  template:
+    metadata:
+      labels:
+        app: system-enterprise-control
+    spec:
+    ##Acá se especifican datos del contenedor que se crea, el nombre,la imagen, el puerto, y las variables de entorno que se van a usar
+      containers:
+      - name: enterprise-backend-api
+        image: tu-usuario-dockerhub/enterprise-backend:v1.0.0 
+        ports:
+        - containerPort: 4000 
+        env:
+        - name: PORT
+          value: "4000"
+        - name: DB_HOST
+          value: "mysql-service"
+        - name: DB_USER
+          value: "root"
+        - name: DB_NAME
+          value: "empresa_db"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: db-password
+
+---
+##Aca es lo mismo que antes pero es service, utiliza un clusterIP para que sea interno y el peurto es igual que antes
+##Tambien utiliza un protocolo de transferencia de datos de tipo TCP
+apiVersion: v1
+kind: Service
+metadata:
+  name: enterprise-backend-service
+spec:
+  type: ClusterIP 
+  selector:
+    app: system-enterprise-control
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+#TCP es un protocolo de transferencia de datos que empaqueta los datos y envia todos los datos en orden y forma, tambien tenemos otro protocolo que es UCP o UPC  que es lo contrario al TCP, es mas rapido pero envia todo de forma desordenada y algunos datos no puedan llegar bien
